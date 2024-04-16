@@ -1,0 +1,5 @@
+grpc:
+  client:
+    student-notification-service:
+      address : static://localhost:9091
+      negotiationType : plaintext

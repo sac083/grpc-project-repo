@@ -1,0 +1,64 @@
+// This .proto file defines the protocol buffer messages and service for managing notifications.
+// Protocol buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data.
+// Each message defined in this file represents a data structure used for exchanging information between systems.
+// The file contains definitions for:
+//   - NotificationService: A service providing methods for retrieving notifications.
+//   - Empty: An empty message used as a placeholder in RPC methods.
+//   - AddressResponse: A message containing address details.
+//   - StudentResponse: A message containing student details.
+//   - NotificationResponse: A message containing notification details.
+//   - NotificationPagesRequest: A message for pagination of notifications.
+//   - NotificationPagesResponse: A message for the response of pagination.
+//   - NotificationList: A message containing a list of notifications.
+// The options specified at the beginning control how the Java code will be generated from this .proto file.
+// The imports bring in necessary definitions from other .proto files, such as wrappers.proto provided by Google.
+// Comments throughout the file explain the purpose of each message, field, and service method.
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.inspiron.notification";
+import "google/protobuf/wrappers.proto";
+
+service NotificationService{
+  rpc getAllNotification(Empty) returns (NotificationList) {};
+//  rpc getNotificationById(NotificationRequest) returns (NotificationResponse) {};
+  rpc GetAllNotificationsPagination(NotificationPagesRequest) returns (NotificationPagesResponse) {
+  }
+
+}
+
+message Empty {}
+
+message AddressResponse {
+  string city = 1;
+  int32 pincode = 2;
+}
+
+message StudentResponse {
+  string studentId = 1;
+  string studentName = 2;
+  int32 studentAge = 3;
+  repeated AddressResponse addressResponses = 4;
+}
+
+message NotificationResponse {
+  string notificationId = 1;
+  string notificationType = 2;
+  StudentResponse payload = 4;
+  string created_on = 3;
+}
+
+message NotificationPagesRequest{
+  google.protobuf.Int32Value page_no = 1;
+  google.protobuf.Int32Value page_size = 2;
+  string sort_by = 3;
+  string sort_order = 4;
+}
+
+message NotificationPagesResponse {
+  NotificationList NotificationLists = 1;
+  optional google.protobuf.Int32Value total_pages = 2;
+}
+
+message NotificationList {
+  repeated NotificationResponse notifications = 1;
+}

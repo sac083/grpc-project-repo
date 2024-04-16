@@ -1,0 +1,49 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.inspiron.notification";
+import "google/protobuf/wrappers.proto";
+
+service NotificationService{
+  rpc getAllNotification(Empty) returns (NotificationList) {};
+  //  rpc getNotificationById(NotificationRequest) returns (NotificationResponse) {};
+  rpc GetAllNotificationsPagination(NotificationPagesRequest) returns (NotificationPagesResponse) {
+  }
+
+}
+
+message Empty {}
+
+message AddressResponse {
+  string city = 1;
+  int32 pincode = 2;
+}
+
+message StudentResponse {
+  string studentId = 1;
+  string studentName = 2;
+  int32 studentAge = 3;
+  repeated AddressResponse addressResponses = 4;
+}
+
+message NotificationResponse {
+  string notificationId = 1;
+  string notificationType = 2;
+  StudentResponse payload = 4;
+  string created_on = 3;
+}
+
+message NotificationPagesRequest{
+  google.protobuf.Int32Value page_no = 1;
+  google.protobuf.Int32Value page_size = 2;
+  string sort_by = 3;
+  string sort_order = 4;
+}
+
+message NotificationPagesResponse {
+  NotificationList notificationLists = 1;
+  optional google.protobuf.Int32Value total_pages = 2;
+}
+
+message NotificationList {
+  repeated NotificationResponse notifications = 1;
+}
